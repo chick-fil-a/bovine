@@ -1,0 +1,36 @@
+<h1>
+ <div style="float">
+	 <div style="float:left;padding:10px 0 0 0">
+		Redshift Clusters<small ng-if="!loading"> (Total: {{(clusters | filter:searchKeyword).length}})</small>
+	 </div>
+  <div style="padding:0 0 10px 0;float:right;width:400px" >
+        <span class="col-md-1" style="font-weight:bold;width=20px"><small>Search</small></span>
+        <span class="col-md-3" style="width:380px">
+         <input type="text" class="form-control" ng-model="searchKeyword"/>
+        </span>
+  </div>
+ </div>
+</h1>
+<div class="loader" ng-if="loading">Loading...</div>
+<table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+		<th>Name</th>
+		<th>ClusterId</th>
+		<th>PubliclyAccessible</th>
+		<th>Encrypted</th>
+	    <th>AccountAlias</th>
+	    <th>AccountNum</th>	
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="cluster in clusters | filter: searchKeyword" ng-click="visitDynamo(table.AccountNum, table.Region, table.TableName)">
+		<td>{{cluster.DBName}}</td>
+		<td>{{cluster.ClusterId}}</td>
+		<td>{{cluster.PubliclyAccessible}}</td>
+		<td>{{cluster.Encrypted}}</td>
+		<td>{{cluster.AccountAlias}}</td>
+		<td>{{cluster.AccountNum}}</td>
+        </tr>
+    </tbody>
+</table>

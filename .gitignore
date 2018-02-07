@@ -1,0 +1,34 @@
+# idea repated
+.idea/
+*.swp
+node_modules/
+
+# general things to ignore
+build/
+dist/
+*.egg-info/
+*.egg
+*.py[cod]
+__pycache__/
+*.so
+*~
+.vscode
+.serverless/*
+
+# due to using tox and pytest
+.tox/
+.cache
+env/
+
+# Unit test / coverage reports
+htmlcov/
+*.coverage
+*unit*.xml
+
+# Zip files from deployments
+*.zip
+
+# Frontend config
+frontend/config.json
+
+

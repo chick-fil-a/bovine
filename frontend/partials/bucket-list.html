@@ -1,0 +1,32 @@
+<h1>
+ <div style="float">
+	 <div style="float:left;padding:10px 0 0 0">
+		 Buckets<small ng-if="!loading"> (Total: {{(s3buckets | filter:searchKeyword).length}})</small>
+	 </div>
+  <div style="padding:0 0 10px 0;float:right;width:400px" >
+        <span class="col-md-1" style="font-weight:bold;width=20px"><small>Search</small></span>
+        <span class="col-md-3" style="width:380px">
+         <input type="text" class="form-control" ng-model="searchKeyword"/>
+        </span>
+  </div>
+ </div>
+</h1>
+<div class="loader" ng-if="loading">Loading...</div>
+<table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+	    <th>Name</th>
+	    <th>Global Access</th>
+	    <th>AccountAlias</th>
+	    <th>AccountNum</th>	
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="bucket in s3buckets | filter: searchKeyword" ng-click="visitS3(bucket.AccountNum, bucket.BucketName)">
+		<td>{{bucket.BucketName}}</td>
+		<td>{{bucket.GlobalAccess}}</td>
+		<td>{{bucket.AccountAlias}}</td>
+		<td>{{bucket.AccountNum}}</td>
+        </tr>
+    </tbody>
+</table>
