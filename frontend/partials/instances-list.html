@@ -1,0 +1,53 @@
+<h1>
+ <div style="float">
+	 <div style="float:left;padding:10px 0 0 0">
+		 Instances<small ng-if="!loading"> (Total: {{(instances | filter:searchKeyword).length}}, Avg age = {{filteredInstances = (instances | filter:searchKeyword);avgAge(filteredInstances)}} days)</small> 
+	 </div>
+  <div style="padding:0 0 10px 0;float:right;width:400px" >
+        <span class="col-md-1" style="font-weight:bold;width=20px"><small>Search</small></span>
+        <span class="col-md-3" style="width:380px">
+         <input type="text" class="form-control" ng-model="searchKeyword"/>
+        </span>
+  </div>
+ </div>
+</h1>
+<div class="loader" ng-if="loading">Loading...</div>
+<table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+	    <th>Instance ID</th>
+		<th>Membership</th>
+		<th>Risk</th>
+	    <th>Image Id</th>
+	    <th>IamInstanceProf.</th>
+	    <th>Name</th>
+	    <th>CreateDate</th>
+	    <th>State</th>
+	    <th>Region</th>
+	    <th>AccountAlias</th>
+	    <th>AccountNum</th>	
+        </tr>
+    </thead>
+	<tbody>
+	<tr ng-repeat="instance in instances | filter: searchKeyword | orderBy:'CreateDate'"
+		ng-click="visitInstanceFromInstances(instance.AccountNum, instance.Region, instance.InstanceId)">
+		<td>{{instance.InstanceId}}</td>
+		<td>{{instance.Membership}}</td>
+		<td>{{riskscore(instance.Runtime, instance.ImageAge)}}</td>
+		<td>{{instance.ImageId}}</td>
+		<td>{{instance.IamInstanceProfile}}</td>
+		<td>{{instance.Name}}</td>
+		<td>{{getDate(instance.CreateDate)}}</td>
+		<td>
+		<div ng-switch="instance.State">
+				<div ng-switch-when="running"><iron-icon icon="av:play-circle-filled" uib-tooltip="{{instance.State}}"></iron-icon></div>
+				<div ng-switch-when="stopped"><iron-icon icon="av:pause-circle-filled" uib-tooltip="{{instance.State}}"></iron-icon></div>
+			    <div ng-switch-when="terminated"><iron-icon icon="av:not-interested" uib-tooltip="{{instance.State}}"></iron-icon></div>
+				<div ng-switch-default><iron-icon icon="icons:error-outline">{{instance.State}}</iron-icon></div>
+		</div></td>
+		<td>{{instance.Region}}</td>
+		<td>{{instance.AccountAlias}}</td>
+		<td>{{instance.AccountNum}}</td>
+	</tr>
+    </tbody>
+</table>

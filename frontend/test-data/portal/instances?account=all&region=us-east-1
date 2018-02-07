@@ -1,0 +1,63 @@
+{"Instances":
+[
+{
+    "Name": "first test instance",
+    "CreateDate" : "24/02/2014",
+    "Region" : "us-east-1",
+    "InstanceId" : "i-ea0322ca",
+    "State" : "running",
+    "AccountAlias" : "cfacrndev",
+    "AccountNum" : "341384775232",
+    "ImageId" : "ami-0b33d91d",
+    "Membership" : "None",
+    "Runtime": 2,
+    "ImageAge": 2,
+    "IamInstanceProfile" : "my_profile_role"
+}
+,
+{
+    "Name": "second test instance",
+    "CreateDate" : "25/02/2014",
+    "Region" : "us-east-2",
+    "InstanceId" : "i-ea0sddfw2ca",
+    "State" : "terminated",
+    "AccountAlias" : "cfacrndev",
+    "AccountNum" : "341384772232",
+    "ImageId" : "ami-0b33d92d",
+    "Membership" : "ECS",
+    "Runtime": 8, 
+    "ImageAge": 2,
+    "IamInstanceProfile" : "my_profile_role2"
+}
+,
+{
+    "Name": "second test instance",
+    "CreateDate" : "25/02/2014",
+    "Region" : "us-east-2",
+    "InstanceId" : "i-ea0sddfw2ca",
+    "State" : "stopped",
+    "AccountAlias" : "cfacrndev",
+    "AccountNum" : "341384772232",
+    "ImageId" : "ami-0b33d92d",
+    "Membership" : "EBS",
+    "Runtime": 99,
+    "ImageAge": 99,
+    "IamInstanceProfile" : "my_profile_role2"
+}
+,
+{
+    "Name": "second test instance",
+    "CreateDate" : "25/02/2014",
+    "Region" : "us-east-2",
+    "InstanceId" : "i-ea0sddfw2ca",
+    "State" : "stopped",
+    "AccountAlias" : "cfacrndev",
+    "AccountNum" : "341384772232",
+    "ImageId" : "ami-0b33d92d",
+    "Membership" : "ASG",
+    "Runtime": 99,
+    "ImageAge": 2,
+    "IamInstanceProfile" : "my_profile_role2"
+}
+]
+}
