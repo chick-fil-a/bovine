@@ -1,0 +1,67 @@
+<h1>
+	{{elb.ELBName}} <small>- {{account.AccountNum}} <i ng-show="account.sticky" class="glyphicon glyphicon-lock"></i></small>
+	<div style="float:right;width:400px" >
+		<span class="col-md-1" style="font-weight:bold;width=20px"><small>Search</small></span>
+         <span class="col-md-3" style="width:380px">
+          <input type="text" class="form-control" ng-model="searchKeyword"/>
+         </span>
+ 	</div>
+    </h1>
+    <div class="loader" ng-if="loading">Loading...</div>
+    <table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+		<th>Name</th>
+		<th>DNS</th>
+		<th>Subnets</th>
+		<th>VPC</th>
+		<th>Internet Facing</th>
+		<th>Security Groups</th>
+	</tr>
+    </thead>
+    <tbody>
+                <td>{{elb.ELBName}}</th>
+                <td>{{elb.DNSName}}</td>
+		<td>
+			<table class="table table-hover" ng-if="!loading">
+				<thead></thead>
+				<tbody>
+					<tr ng-repeat="subnet in elb.Subnets">
+						<td>{{subnet}}</td>
+				</tbody>
+			</table>	
+		</td>
+		<td>{{elb.VpcId}}</td>
+		<td><b>{{elb.InternetFacing}}</b></td>
+		<td>
+			<table class="table table-hover" ng-if="!loading">
+				<thead></thead>
+				<tbody>
+					<tr ng-repeat="sg in elb.SecurityGroups" ng-click="visitSecurityGroup(account.AccountNum,sg)">
+						<td>{{sg}}</td>
+				</tbody>
+			</table>	
+		</td>
+        </tr>
+    </tbody>
+  </table>
+  <br>
+  <div style="float">
+	  <div id="instances" style="float:left;text:bold" ng-click="instancesCollapsed = !instancesCollapsed"><b>Instances </b><b ng-if="!loading">(Total: {{(instances | filter:searchKeyword).length}})</b></div>
+</div>
+<div ng-if="!instancesCollapsed">
+  <table class="table table-hover" ng-if="!loading">
+	  <thead>
+		  <tr>
+			  <th>Instance Id</th>
+			  <th>Name</th>
+			 </tr>
+		 </thead>
+		 <tbody>
+			 <tr ng-repeat="instance in instances | filter:searchKeyword | orderBy: 'InstanceId'" ng-click="visitInstance(account.AccountNum, elb.Region, instance.InstanceId)">
+			  <td>{{instance.InstanceId}}</td>
+			  <td>{{instance.Name}}</td>	  
+		  </tr>
+	  </tbody>
+  </table>
+ </div>

@@ -1,0 +1,39 @@
+<h1>
+	<div style="float">
+		<div style="float:left;padding:10px 0 0 0">
+			Accounts
+			<small ng-if="!loading"> (Total: {{(accounts | filter:searchKeyword).length}})</small>
+			<button type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Add new account" ng-click="addAccount();" ng-disabled="buttonClicked" >+</button>
+		</div>
+		<div style="padding:0 0 10px 0;float:right;width:400px">
+			<span class="col-md-1" style="font-weight:bold;width=20px">
+				<small>Search</small>
+			</span>
+			<span class="col-md-3" style="width:380px">
+				<input type="text" class="form-control" ng-model="searchKeyword" />
+			</span>
+		</div>
+	</div>
+</h1>
+<div class="loader" ng-if="loading">Loading...</div>
+<table class="table table-hover" ng-if="!loading">
+	<thead>
+		<tr>
+			<th>AccountNum</th>
+			<th>Alias</th>
+			<th>Email</th>
+			<th>Owner</th>
+			<th>Remediate</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="account in accounts | filter: searchKeyword | orderBy: 'alias'" ng-click="visit(account.accountNum)">
+			<th>
+				<i ng-show="account.sticky" class="glyphicon glyphicon-lock"></i> {{account.accountNum}}</th>
+			<td>{{account.alias}}</td>
+			<td>{{account.email}}</td>
+			<td>{{account.AccountOwner}}</td>
+			<td>{{account.remediate}}</td>
+		</tr>
+	</tbody>
+</table>

@@ -1,0 +1,21 @@
+<div>
+	<b>Authenticate</b>
+	<br>	
+    Username: <input type="text" ng-model="username" /><br />
+    Token: <input type="text" ng-model="token" /><br />
+    <button ng-click="verify(username,token)">Login</button>
+          <div class="loader" ng-if="loading">Loading...</div>
+  {{verify}}
+</div>
+
+<br><br>
+<div>
+	<b>Register</b>
+	<form novalidate class="simple-form">
+		Username: <input type="text" ng-model="username" /><br />
+		<input type="submit" ng-click="register(username)" value="Register" />
+	</form>
+	        <div class="loader" ng-if="loading">Loading...</div>
+
+	<img data-ng-src="data:image/png;base64,{{register}}" data-err-src="images/png/avatar.png"/>
+</div>

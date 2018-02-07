@@ -1,0 +1,58 @@
+	<h1 ng-click="visitAccount(account.accountNum)" ng-if="!loading">
+		{{user.Username}} <small>- {{account.accountNum}}</small>
+	</h1>
+	<div class="loader" ng-if="loading">Loading...</div>
+<div class="container" ng-if="error"><h3><small>Error: </small>{{message}}</h3></div>
+
+<table class="table table-hover" ng-if="!loading && !error">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Create Date</th>
+            <th>Password Set</th>
+	    <th>AccountNum</th>
+        </tr>
+    </thead>
+    <tbody>
+<tr>
+                <td>{{user.Username}}</td>
+                <td>{{user.CreateDate | date:shortDate}}</td>
+                <td>{{user.PasswordSet}}</td>
+                <td>{{account.accountNum}}</td>
+	</tr>    
+</tbody>
+</table>
+<div class="container" ng-if="!error && !loading">
+ <uib-tabset active="active">
+ <uib-tab index="0" heading="Access Keys">
+<table class="table table-hover" ng-if="!loading && !error">
+<thead>
+<tr>
+	<th>Access Key</th>
+	<th>Status</th>
+	<th>CreateDate</th>
+	<th>Last Used</th>
+	<th>Last Service</th>
+	<th>Last Region</th>
+</tr>
+</thead>
+<tbody>
+	<tr ng-repeat="accesskey in accesskeys">
+		<td>{{accesskey.KeyId}}</td>
+		<td>{{accesskey.Status}}</td>
+		<td>{{accesskey.CreateDate | date:shortDate}}</td>
+		<td>{{accesskey.LastUsed | date:shortDate}}</td>
+		<td>{{accesskey.LastService}}</td>
+		<td>{{accesskey.LastRegion}}</td>
+	</tr>
+</tbody>
+</table>
+</uib-tab>
+<uib-tab index="1" heading="Policies">
+	<div class="panel run-output" ng-class="{'panel-success': !output.err, 'panel-danger': output.err}">
+		        <div class="panel-heading">Policies</div>
+			         <div class="panel-body"><pre class="pre-scrollable">{{user.Policies | json}}</pre></div>
+			 </div>
+</uib-tab>
+</uib-tabset>
+</div>

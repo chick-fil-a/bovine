@@ -1,0 +1,74 @@
+	<h1 ng-click="visitAccount(account.accountNum)" ng-controller="InstanceController">
+		{{instance.InstanceId}} <small>- {{account.accountNum}}<i ng-show="account.sticky" class="glyphicon glyphicon-lock"></i></small>
+	</h1>
+	<div class="loader" ng-if="loading">Loading...</div>
+  <table class="table table-hover">
+    <thead>
+	    <tr>
+		    	<th>Public DNS</th>
+			<th>Public IP</th>
+			<th>ELB</th>
+			<th>Private IP</th>
+			<th>Subnet Id</th>
+			<th>Network ACL</th>
+			<th>Gateway Id</th>
+			<th>Internet Facing</th>
+			<th>Instance Type</th>
+			<th>Image Id</th>
+			<th>Image Name</th>
+			<th>CreateDate</th>
+		</tr>
+    </thead>
+    <tbody>
+	    <tr>
+			<td>{{instance.PublicDnsName}}</td>
+			<td>{{instance.PublicIpAddress}}</td>
+			<td>{{instance.ElasticLoadBalancer}}</td>
+			<td>{{instance.PrivateIpAddress}}</td>
+			<td>{{instance.SubnetId}}</td>
+			<td>{{instance.NetworkACL}}</td>
+			<td>{{routes.GatewayId}}</td>
+			<td><b>{{instance.InternetFacing}}</b></td>
+			<td>{{instance.InstanceType}}</td>
+			<td>{{instance.ImageId}}</td>
+			<td>{{instance.ImageName}}</td>
+			<td>{{getDate(instance.CreateDate)}}</td>
+  </table>
+  <br>
+<div class="container">
+	 <uib-tabset active="active">
+	 <uib-tab index="0" heading="Security Groups (Total: {{(instance.SecurityGroups | filter:searchKeyword).length}})">
+		<table class="table table-hover">
+          	<thead>
+                  <tr>
+                          <th>Group Name</th>
+                          <th>Group Id</th>
+                </tr>
+        	</thead>
+        	<tbody>
+                <tr ng-repeat="group in instance.SecurityGroups" ng-click="visitSecurityGroup(account.accountNum, instance.Region, group.GroupId)">
+                        <td >{{ group.GroupName }}</td>
+                        <td >{{ group.GroupId }}</td>
+                </tr>
+
+        	</tbody>
+		</table> 
+	 </uib-tab>
+	 <uib-tab index="1" heading="Tags">
+		<table class="table table-hover">
+        	<thead>
+        	<tr>
+                	<th>Key</th>
+                	<th>Value</th>
+        	</tr>
+		</thead>
+        	<tbody>
+		<tr ng-repeat="tag in instance.Tags">
+                	<td>{{tag.Key}}</td>
+                	<td>{{tag.Value}}</td>
+        	</tr>
+		</tbody>
+  		</table> 
+	</uib-tab>
+	</uib-tabset>
+  </div>
