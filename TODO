@@ -3,4 +3,4 @@
   - currently working in instancecount, usercount, getinstances
 * Update UI to newer framework
 * add custom authorizer for main endpoint to authorize cookie header
-* Fix lambda cold start issue on getinstances. Currently might time out depending on number of accounts/instances
+* API caching
