@@ -1,0 +1,151 @@
+<style type="text/css">
+	  form.tab-form-demo .tab-pane {
+	      margin: 20px 20px;
+	        }
+	</style>
+<h1>
+        {{account.alias}} <small>- <a href="https://signin.aws.amazon.com/switchrole?account={{account.accountNum}}&roleName=CFASecurityAudit&displayName={{account.alias}}" target="_blank">{{account.accountNum}}</a> <i ng-show="account.sticky" class="glyphicon glyphicon-lock"></i></small>
+	<div style="float:right;width:400px" >
+		<span class="col-md-1" style="font-weight:bold;width:20px"><small>Search</small></span>
+         <span class="col-md-3" style="width:380px">
+          <input type="text" class="form-control" ng-model="searchKeyword"/>
+         </span>
+ 	</div>
+    </h1>
+    <div class="loader" ng-if="loading">Loading...</div>
+    <table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+		<th>Email</th>
+		<th>Owner</th>
+		<th>IAM</th>
+		<th>PublicIPs</th>
+		<th>RiskySG</th>
+		<th>UnusedSG</th>
+		<th>Bastion</th>
+		<th>Admins</th>
+		<th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-show="account.accountNum">
+                <th><i ng-show="account.sticky" class="glyphicon glyphicon-lock"></i> {{account.email}}</th>
+		<td>{{account.owner}}</td>
+		<td>{{account.iam}}</td>
+		<td>{{account.publicIP}}</td>
+		<td>{{account.riskysg}}</td>
+		<td>{{account.unusedsg}}</td>
+		<td>{{account.bastion}}</td>
+		<td>{{account.admins}}</td>
+		<td><a href="https://signin.aws.amazon.com/switchrole?account={{account.accountNum}}&roleName=CFASecurityAudit&displayName={{account.alias}}" target="_blank">Assume Role</a>
+        </tr>
+    </tbody>
+  </table>
+  <br>
+<div class="container">
+ <uib-tabset active="active">
+ <uib-tab index="0" heading="Instances (Total: {{(instances | filter:searchKeyword).length}})">
+		<div >
+  			<table class="table table-hover" ng-if="!loading">
+	  		<thead>
+		  		<tr>
+			  		<th>Instance Id</th>
+			  		<th>Name</th>
+					<th>State</th>
+					<th>Region</th>
+		  		</tr>
+		 	</thead>
+		 	<tbody>
+			 	<tr ng-repeat="instance in instances | filter:searchKeyword | orderBy: 'InstanceId'" ng-click="visitInstance(account.accountNum, instance.Region, instance.InstanceId)">
+			  	<td>{{instance.InstanceId}}</td>
+				<td>{{instance.Name}}</td>
+		      		<td>{{instance.State}}</td>		
+		  	  	<td>{{instance.Region}}</td>
+		  		</tr>
+	  		</tbody>
+  		</table>
+ 	</div>
+	</uib-tab>
+      <uib-tab index="1" heading="Users (Total: {{(users | filter:searchKeyword).length}})" disable="tab.disabled">
+	<div>
+	<table class="table table-hover" ng-if="!loading">
+	    <thead>
+	        <tr>
+		 <th>Username</th>
+            	 <th>Create Date</th>
+            	 <th>Password Set</th>
+        	</tr>
+    	    </thead>
+    	<tbody>
+        	<tr ng-repeat="user in users | filter: searchKeyword | orderBy: 'AccountNum'" ng-click="visitUser(user.AccountNum, user.Username)">
+                	<td>{{user.Username}}</td>
+                	<td>{{user.CreateDate | date:shortDate}}</td>
+                	<td>{{user.PasswordSet}}</td>
+        	</tr>
+    	</tbody>
+	</table>
+	</div>
+       </uib-tab>
+      <uib-tab index="2" heading="Databases (Total: {{(databases | filter:searchKeyword).length}})" disable="tab.disabled">
+	<div>
+	<table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>DB Id</th>
+            <th>Public Access</th>
+            <th>Type</th>
+            <th>Version</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="database in databases | filter: searchKeyword" ng-click="visitDatabase(database.AccountNum, database.Region, database.DBId)">
+                <td>{{database.DBName}}</td>
+                <td>{{database.DBId}}</td>
+                <td>{{database.PublicAccess}}</td>
+                <td>{{database.Engine}}</td>
+                <td>{{database.Version}}</td>
+        </tr>
+    </tbody>
+</table>
+
+	</div>
+	</uib-tab>
+	<uib-tab index="3" heading="DynamoDB (Total: {{(tables | filter:searchKeyword).length}})" disable="tab.disabled">
+	<div>
+<table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="table in tables | filter: searchKeyword" ng-click="visitDynamo(table.AccountNum, table.Region, table.TableName)">
+                <td>{{table.TableName}}</td>
+        </tr>
+    </tbody>
+</table>
+
+	</div>
+	</uib-tab>
+	<uib-tab index="4" heading="S3 (Total: {{(s3buckets | filter:searchKeyword).length}})" disable="tab.disabled">
+	<div>
+<table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Global Access</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="bucket in s3buckets | filter: searchKeyword" ng-click="visitS3(bucket.AccountNum, bucket.Name)">
+                <td>{{bucket.BucketName}}</td>
+                <td>{{bucket.GlobalAccess}}</td>
+        </tr>
+    </tbody>
+</table>
+
+	</div>
+	</uib-tab>
+ </uib-tabset>
+</div>

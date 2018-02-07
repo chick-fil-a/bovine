@@ -1,0 +1,104 @@
+<style type="text/css">
+          form.tab-form-demo .tab-pane {
+              margin: 20px 20px;
+                }
+        </style>
+<h1>
+        {{securitygroup.GroupId}} <small>- {{account.accountNum}} <i ng-show="account.sticky" class="glyphicon glyphicon-lock"></i></small>
+    </h1>
+    <div class="loader" ng-if="loading">Loading...</div>
+    <table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+		<th>Name</th>
+		<th>Id</th>
+		<th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+	    <td>{{securitygroup.GroupName}}</td>
+                <td>{{securitygroup.GroupId}}</th>
+		<td>{{securitygroup.Description}}</td>
+	</tbody>
+</table>
+<div>
+	<h3>Rules</h3>
+	<uib-tabset active="active">
+	<uib-tab index="0" heading="Inbound">
+	<table class="table table-hover" ng-if="!loading">
+			<thead>
+			<th>Protocol</th>
+			<th>Ports</th>
+			<th>Source</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="rule in securitygroup.InboundRules" >
+				<td>{{rule.Protocol}}</td>
+				<td>{{rule.Ports}}</td>
+				<td>{{rule.Source}}</td>
+				</tr>
+			</tbody>	
+		</table>
+	</uib-tab>
+	<uib-tab index="1" heading="Outbound" disable="tab.disabled">
+		<table class="table table-hover" ng-if="!loading">
+			<thead>
+			<th>Protocol</th>
+			<th>Ports</th>
+			<th>Destination</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="rule in securitygroup.OutboundRules" >
+				<td>{{rule.Protocol}}</td>
+				<td>{{rule.Ports}}</td>
+				<td>{{rule.Destination}}</td>
+				</tr>
+			</tbody>	
+		</table>
+		</uib-tab>
+	</uib-tabset>
+	</div>		
+<div>
+	<h3>Associations</h3>       
+	<uib-tabset active="active">
+	 <uib-tab index="0" heading="Instances (Total: {{(instances | filter:searchKeyword).length}})">
+                <div >
+                        <table class="table table-hover" ng-if="!loading">
+                        <thead>
+                                <tr>
+                                        <th>Instance Id</th>
+                                        <th>Name</th>
+                                        <th>State</th>
+                                        <th>Region</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                                <tr ng-repeat="instance in instances | filter:searchKeyword | orderBy: 'InstanceId'" ng-click="visitInstance(account.accountNum, instance.Region, instance.InstanceId)">
+                                <td>{{instance.InstanceId}}</td>
+                                <td>{{instance.Name}}</td>
+                                <td>{{instance.State}}</td>
+                                <td>{{instance.Region}}</td>
+                                </tr>
+                        </tbody>
+                </table>
+        </div>
+        </uib-tab> 
+	<uib-tab index="1" heading="ELBs (Total: {{(elbs | filter:searchKeyword).length}})" disable="tab.disabled">
+	  <div>
+		<table class="table table-hover" ng-if="!loading">
+        	  <thead>
+                  <tr>
+                          <th>Name</th>
+                         </tr>
+                  </thead>
+                  <tbody>
+                         <tr ng-repeat="elb in elbs | filter:searchKeyword | orderBy: 'Name'">
+                          <td>{{elb.Name}}</td>
+                  </tr>
+          	</tbody>
+  		</table>
+
+	 </div>
+	 </uib-tab>
+	 </uib-tabset>
+ </div>
