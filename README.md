@@ -41,7 +41,8 @@ appropriate S3 bucket for the stage.
  > sh deploy-content.sh <aws credential profile> <stage>
 
 
-What's Next?
+
+What's next?
 ------------
 *   Better documentation
 *   Unit tests
