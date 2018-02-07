@@ -1,0 +1,403 @@
+service: bovine
+provider:
+  name: aws
+  runtime: python2.7
+  profile: ${opt:profile}
+  role: lambdaAuditRole
+  stage: ${opt:stage}
+  environment:
+    S3_BUCKET: ${file(config/config.${self:provider.stage}.json):s3bucket}
+    REPORTS_BUCKET: ${file(config/config.${self:provider.stage}.json):reportsBucket}
+    STAGE: ${opt:stage, self:provider.stage}
+    RULES_BUCKET: ${file(config/config.${self:provider.stage}.json):rulesBucket}
+    AUDIT_LAMBDA: ${file(config/config.${self:provider.stage}.json):auditLambda}
+    ASSUME_ROLE: ${file(config/config.${self:provider.stage}.json):lambdaAssumeRole}
+    AUTH_URL: ${file(config/config.${self:provider.stage}.json):authUrl}
+    URL: ${file(config/config.${self:provider.stage}.json):domainName}
+custom: 
+  lambdaRole: ${file(config/config.${self:provider.stage}.json):lambdaRole}
+  accountId: ${file(config/config.${self:provider.stage}.json):accountId}
+  domainName: ${file(config/config.${self:provider.stage}.json):domainName}
+  authorizerArn: ${file(config/config.${self:provider.stage}.json):authorizerArn}
+  region: ${file(config/config.${self:provider.stage}.json):region}
+  s3bucket: ${file(config/config.${self:provider.stage}.json):s3bucket}
+  reportsBucket: ${file(config/config.${self:provider.stage}.json):reportsBucket}
+  rulesBucket: ${file(config/config.${self:provider.stage}.json):rulesBucket}
+  auditLambda: ${file(config/config.${self:provider.stage}.json):auditLambda}
+package:
+  include:
+    - lib/**
+  exclude:
+    - README.md
+
+functions:
+  ping:
+    name: ${self:service}-ping
+    handler: ping.lambda_handler
+    events:
+      - http:
+          method: get
+          path: api/ping
+  main:
+    name: ${self:service}-main
+    handler: main.lambda_handler
+    role: lambdaAuditRole
+    timeout: 15
+    events:
+      - http: GET {proxy+}
+      - http: GET /
+  login:
+    name: ${self:service}-login
+    handler: login.lambda_handler
+    timeout: 15
+    events:
+      - http:
+          method: get
+          path: login
+  dashboard:
+    name: ${self:service}-dashboard
+    handler: dashboard.lambda_handler
+    events:
+      - http:
+          method: get
+          path: api/dashboard
+          authorizer:
+            arn: ${self:custom.authorizerArn}
+  rules:
+    name: ${self:service}-rules
+    handler: getcompliancerules.lambda_handler
+    events:
+      - http:
+          method: get
+          path: api/rules
+          authorizer:
+            arn: ${self:custom.authorizerArn}
+  reports:
+    name: ${self:service}-reports
+    handler: getreports.lambda_handler
+    events:
+      - http:
+          method: get
+          path: api/reports
+          authorizer:
+            arn: ${self:custom.authorizerArn}
+  runreport:
+    name: ${self:service}-runreport
+    handler: runreport.lambda_handler
+    events:
+      - http:
+          method: get
+          path: api/reports/run
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  accountcount:
+    name: ${self:service}-accountcount
+    handler: accountcount.lambda_handler
+    timeout: 15
+    events:
+      - http:
+          method: get
+          path: api/summary/accountcount
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  usercount:
+    name: ${self:service}-usercount
+    handler: usercount.lambda_handler
+    timeout: 60
+    events:
+      - http:
+          method: get
+          path: api/summary/usercount
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  instancecount:
+    name: ${self:service}-instancecount
+    handler: instancecount.lambda_handler
+    timeout: 60
+    events:
+      - http:
+          method: get
+          path: api/summary/instancecount
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  accounts:
+    name: ${self:service}-accounts
+    handler: getaccounts.lambda_handler
+    timeout: 15
+    events:
+      - http:
+          method: get
+          path: api/accounts
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  account:
+    name: ${self:service}-account
+    handler: getaccount.lambda_handler
+    timeout: 10
+    events:
+      - http:
+          method: get
+          path: api/account
+          authorizer:
+            arn: ${self:custom.authorizerArn}
+  addAccount:
+    name: ${self:service}-addAccount
+    handler: add_account.lambda_handler
+    timeout: 10
+    events:
+      - http:
+          method: post
+          path: api/addAccount
+          authorizer:
+            arn: ${self:custom.authorizerArn}
+  users:
+    name: ${self:service}-users
+    handler: getusers.lambda_handler
+    timeout: 120
+    events:
+      - http:
+          method: get
+          path: api/users
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  user:
+    name: ${self:service}-user
+    handler: getuser.lambda_handler
+    timeout: 30
+    events:
+      - http:
+          method: get
+          path: api/user
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  roles:
+    name: ${self:service}-roles
+    handler: getroles.lambda_handler
+    timeout: 120
+    events:
+      - http:
+          method: get
+          path: api/roles
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  publicips:
+    name: ${self:service}-publicips
+    handler: getpublicips.lambda_handler
+    timeout: 120
+    events:
+      - http:
+          method: get
+          path: api/publicips
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  instances:
+    name: ${self:service}-instances
+    handler: getinstances.lambda_handler
+    timeout: 120
+    events:
+      - http:
+          method: get
+          path: api/instances
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  instance:
+    name: ${self:service}-instance
+    handler: getinstance.lambda_handler
+    timeout: 30
+    events:
+      - http:
+          method: get
+          path: api/instance
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  securitygroups:
+    name: ${self:service}-securitygroups
+    handler: getsecuritygroups.lambda_handler
+    timeout: 120
+    events:
+      - http:
+          method: get
+          path: api/securitygroups
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  securitygroup:
+    name: ${self:service}-securitygroup
+    handler: getsecuritygroup.lambda_handler
+    timeout: 30
+    events:
+      - http:
+          method: get
+          path: api/securitygroup
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  elbs:
+    name: ${self:service}-elbs
+    handler: getelbs.lambda_handler
+    timeout: 120
+    events:
+      - http:
+          method: get
+          path: api/elbs
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  elb:
+    name: ${self:service}-elb
+    handler: getelb.lambda_handler
+    timeout: 30
+    events:
+      - http:
+          method: get
+          path: api/elb
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  dbs:
+    name: ${self:service}-databases
+    handler: getdbs.lambda_handler
+    timeout: 120
+    events:
+      - http:
+          method: get
+          path: api/databases
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  dynamotables:
+    name: ${self:service}-dynamotables
+    handler: getdynamotables.lambda_handler
+    timeout: 120
+    events:
+      - http:
+          method: get
+          path: api/dynamotables
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  redshift:
+    name: ${self:service}-redshift
+    handler: getredshiftclusters.lambda_handler
+    timeout: 120
+    events:
+      - http:
+          method: get
+          path: api/redshiftclusters
+          authorizer:
+            arn: ${self:custom.authorizerArn} 
+  s3buckets:
+    name: ${self:service}-s3
+    handler: gets3buckets.lambda_handler
+    timeout: 120
+    events:
+      - http:
+          method: get
+          path: api/s3
+          authorizer:
+            arn: ${self:custom.authorizerArn}
+  s3bucket:
+    name: ${self:service}-bucket
+    handler: gets3bucket.lambda_handler
+    timeout: 30
+    events:
+      - http:
+          method: get
+          path: api/bucket    
+          authorizer:
+            arn: ${self:custom.authorizerArn}     
+resources:
+  Resources:
+    #pathmapping:
+    #  Type: AWS::ApiGateway::BasePathMapping
+    #  Properties:
+    #    DomainName: ${self:custom.${opt:stage, self:provider.stage}DomainName}
+    #    RestApiId: 
+    #      Ref: ApiGatewayRestApi
+    #    Stage: ${opt:stage, self:provider.stage}
+    s3bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${file(config/config.${self:provider.stage}.json):s3bucket}
+    lambdaAuditRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${file(config/config.${self:provider.stage}.json):lambdaRole}
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal: 
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: ${file(config/config.${self:provider.stage}.json):lambdaPolicy}
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - sts:AssumeRole
+                    - sts:GetSessionToken
+                  Resource: '*'
+                - Effect: Allow # note that these rights are given in the default policy and are required if you want logs out of your lambda(s)
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource: arn:aws:logs:${self:custom.region}:${self:custom.accountId}:log-group:/aws/lambda/*:*:*
+                - Effect: "Allow"
+                  Action:
+                    - "s3:*"
+                  Resource:
+                      Fn::Join:
+                        - ""
+                        - - "arn:aws:s3:::"
+                          - "${self:custom.reportsBucket}"                         
+                - Effect: "Allow"
+                  Action:
+                    - "s3:*"
+                  Resource:
+                      Fn::Join:
+                        - ""
+                        - - "arn:aws:s3:::"
+                          - "${self:custom.reportsBucket}"
+                          - "/*"
+                - Effect: "Allow"
+                  Action:
+                    - "s3:*"
+                  Resource:
+                      Fn::Join:
+                        - ""
+                        - - "arn:aws:s3:::"
+                          - "${self:custom.rulesBucket}"
+                - Effect: "Allow"
+                  Action:
+                    - "s3:*"
+                  Resource:
+                      Fn::Join:
+                        - ""
+                        - - "arn:aws:s3:::"
+                          - "${self:custom.rulesBucket}"
+                          - "/*"
+                - Effect: "Allow"
+                  Action:
+                    - "s3:*"
+                  Resource:
+                      Fn::Join:
+                        - ""
+                        - - "arn:aws:s3:::"
+                          - "${self:custom.s3bucket}"
+                          - "/*"                          
+                - Effect: Allow
+                  Action:
+                    - dynamodb:Query
+                    - dynamodb:Scan
+                    - dynamodb:GetItem
+                    - dynamodb:PutItem
+                    - dynamodb:UpdateItem
+                    - dynamodb:DeleteItem
+                  Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/AWS-Accounts-Table*"
+                - Effect: Allow
+                  Action:
+                    - lambda:InvokeFunction
+                  Resource: "arn:aws:lambda:${opt:region, self:provider.region}:${self:custom.accountId}:function:${self:service}-*"
+                - Effect: Allow
+                  Action:
+                    - lambda:InvokeFunction
+                  Resource: "arn:aws:lambda:${opt:region, self:provider.region}:${self:custom.accountId}:function:${self:custom.auditLambda}"   

@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Add account to BOVI(n)E</h3>
+    Add account information here. Account number is required.
+    <p>
+</div>
+<div class="modal-body" id="modal-body" style="float">
+    Account Number: <textarea class="form-control" id="accountNum" name="accountNum" placeholder="ex: 123456789012" ng-model="accountNum"></textarea>
+    Account Alias: <textarea class="form-control" id="alias" name="alias" placeholder="friendly name of account" ng-model="alias"></textarea>
+    Account Email: <textarea class="form-control" id="email" name="email" placeholder="test@test.com" ng-model="email"></textarea>
+    Account Owner: <textarea class="form-control" id="owner" name="owner" placeholder="Moo Cow" ng-model="owner"></textarea>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok(accountNum,alias,email,owner)">Submit</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>
