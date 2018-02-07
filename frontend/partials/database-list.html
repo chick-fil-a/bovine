@@ -1,0 +1,38 @@
+<h1>
+ <div style="float">
+	 <div style="float:left;padding:10px 0 0 0">
+		Databases<small ng-if="!loading"> (Total: {{(databases | filter:searchKeyword).length}})</small>
+	 </div>
+  <div style="padding:0 0 10px 0;float:right;width:400px" >
+        <span class="col-md-1" style="font-weight:bold;width=20px"><small>Search</small></span>
+        <span class="col-md-3" style="width:380px">
+         <input type="text" class="form-control" ng-model="searchKeyword"/>
+        </span>
+  </div>
+ </div>
+</h1>
+<div class="loader" ng-if="loading">Loading...</div>
+<table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+	    <th>Name</th>
+	    <th>DB Id</th>
+	    <th>Public Access</th>
+	    <th>Type</th>
+	    <th>Version</th>
+	    <th>AccountAlias</th>
+	    <th>AccountNum</th>	
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="database in databases | filter: searchKeyword" ng-click="visitDatabase(database.AccountNum, database.Region, database.DBId)">
+		<td>{{database.DBName}}</td>
+		<td>{{database.DBId}}</td>
+		<td>{{database.PublicAccess}}</td>
+		<td>{{database.Engine}}</td>
+		<td>{{database.Version}}</td>
+		<td>{{database.AccountAlias}}</td>
+		<td>{{database.AccountNum}}</td>
+        </tr>
+    </tbody>
+</table>

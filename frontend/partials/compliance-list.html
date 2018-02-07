@@ -1,0 +1,79 @@
+<h1>
+    <div>
+        <div style="float:left;padding:10px 0 0 0">
+            Compliance Audit Report
+        </div>
+        <div style="padding:0 0 10px 0;float:right;width:400px">
+            <span class="col-md-1" style="font-weight:bold;width:20px">
+                <small>Search</small>
+            </span>
+            <span class="col-md-3" style="width:380px">
+                <input type="text" class="form-control" ng-model="searchKeyword" />
+            </span>
+        </div>
+    </div>
+</h1>
+<br>
+<br>
+<p>
+    <span class="col-md-3" style="width: 400px; float: right;padding:10px 10px 10px 10px">
+
+        <button type="button" class="btn btn-info btn-sm" ng-click="reloadPage();">Report as of {{complianceAlerts.statusDate * 1000 | date: 'MM/dd/yyyy h:mma'}}</button>
+        <button type="button" class="btn btn-primary btn-sm" ng-click="runReport();" ng-disabled="buttonClicked">{{buttonClicked && 'Report is Running...' || 'Run report'}}</button>
+        <select ng-model="selectedReport" ng-options="x.LastModified for x in reportsList" ng-change="selectionUpdate()"></select>
+    </span>
+</p>
+<div class="loader" ng-if="loading">Loading...</div>
+
+<div class="container">
+    <uib-tabset active="active">
+        <uib-tab index="0" heading="Policy Violations">
+            <table class="table table-hover" ng-if="!loading">
+                <thead>
+                    <tr>
+                        <th>AccountNum</th>
+                        <th>Alias</th>
+                        <th>Account</th>
+                        <th>Infrastructure</th>
+                        <th>Storage</th>
+                        <th>IAM</th>
+                        <th>Database</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="alert in complianceAlerts.accountReports | filter: searchKeyword | orderBy: ['-groupExceptions.infrastructure.count','-groupExceptions.storage.count','-groupExceptions.database.count','-groupExceptions.iam.count','-groupExceptions.account.count']"
+                        ng-click="visit(alert.accountNum)">
+                        <th>
+                            <i ng-show="account.sticky" class="glyphicon glyphicon-lock"></i> {{alert.accountNum}}</th>
+                        <td>{{alert.alias}}</td>
+                        <td>{{(alert.groupExceptions.account.count)}}</td>
+                        <td>{{(alert.groupExceptions.infrastructure.count)}}</td>
+                        <td>{{(alert.groupExceptions.storage.count)}}</td>
+                        <td>{{(alert.groupExceptions.iam.count)}}</td>
+                        <td>{{(alert.groupExceptions.database.count)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </uib-tab>
+        <uib-tab index="1" heading="Rules">
+            <table class="table table-hover" ng-if="!loading">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Service</th>
+                        <th>Description</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="rule in rules.Rules | filter: searchKeyword">
+                        <td>{{rule.Rule.name}}</td>
+                        <td>{{rule.Service}}</td>
+                        <td>{{rule.Rule.description}}</td>
+                        <td>{{rule.Rule.priority}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </uib-tab>
+    </uib-tabset>
+</div>

@@ -1,0 +1,53 @@
+<style type="text/css">
+	  form.tab-form-demo .tab-pane {
+	      margin: 20px 20px;
+	        }
+	</style>
+<h1>
+        {{alerts[0].alias}} <small>- {{alerts[0].accountNum}} <i ng-show="account.sticky" class="glyphicon glyphicon-lock"></i></small>
+	<div style="float:right;width:400px" >
+		<span class="col-md-1" style="font-weight:bold;width=20px"><small>Search</small></span>
+         <span class="col-md-3" style="width:380px">
+          <input type="text" class="form-control" ng-model="searchKeyword"/>
+         </span>
+ 	</div>
+    </h1>
+    <div class="loader" ng-if="loading">Loading...</div>
+    <div class="container">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+     <div class="panel panel-primary">
+      <div class="panel-heading">
+                <h3>Total Alerts</h3>
+      </div>
+      <div class="panel-body">
+            <h2><p><div id="alerts" style="text:bold">{{(alerts[0].riskysg).length}}</div></p></h2>
+      </div>
+     </div>
+    </div>
+</div>
+  <br>
+<div class="container">
+ <uib-tabset active="active">
+ <uib-tab index="0" heading="RiskySG (Total: {{(alerts[0].riskysg | filter:searchKeyword).length}})">
+		<div >
+  			<table class="table table-hover" ng-if="!loading">
+				<caption>Security groups open to the world using non-compliant ports (allowed ports: 80, 443, 2222)</caption>
+				<thead>
+		  		<tr>
+			  		<th>Group id</th>
+			  		<th>Name</th>
+					<th>Bad Ports</th>
+		  		</tr>
+		 	</thead>
+		 	<tbody>
+			 	<tr ng-repeat="riskysg in alerts[0].riskysg | filter:searchKeyword | orderBy: 'GroupId'" ng-click="visitSecurityGroup(alerts[0].accountNum,riskysg[1])">
+			  	<td>{{riskysg[1]}}</td>
+				<td>{{riskysg[0]}}</td>
+		      		<td>{{riskysg[2]}}</td>		
+				</tr>
+	  		</tbody>
+  		</table>
+ 	</div>
+	</uib-tab>
+ </uib-tabset>
+</div>

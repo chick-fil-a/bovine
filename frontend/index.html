@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+
+<head>
+    <title>BOVI(n)E</title>
+    <meta charset="utf-8">
+    <meta name="fragment" content="!">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+
+<body ng-app="app" ng-controller="MainController">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#!/" style="padding:0px;">
+                    <a class="navbar-brand" href="#!/" style="color:white;">BOVI(n)E
+                    <!--<img src="bovine.png" style="height:100%;float:center;">
+                    <small style="color:white;">BOVI(n)E</small>-->
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li ng-class="{ active: routeActive('/accounts')}">
+                        <a href="#!/accounts">Accounts</a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" ui-sref="a">IAM
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" uib-dropdown-menu>
+                            <li ng-class="{ active: routeActive('/users')}">
+                                <a href="#!/users">Users</a>
+                            </li>
+                            <li ng-class="{ active: routeActive('/roles')}">
+                                <a href="#!/roles">Roles</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" ui-sref="a">Infrastructure
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" uib-dropdown-menu>
+                            <li ng-class="{ active: routeActive('/publicips')}">
+                                <a href="#!/publicips">Public IP</a>
+                            </li>
+                            <li ng-class="{ active: routeActive('/instances')}">
+                                <a href="#!/instances">Instances</a>
+                            </li>
+                            <li ng-class="{ active: routeActive('/securitygroups')}">
+                                <a href="#!/securitygroups">Security Groups</a>
+                            </li>
+                            <li ng-class="{ active: routeActive('/loadbalancers')}">
+                                <a href="#!/loadbalancers">Loadbalancers</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" ui-sref="a">Databases
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li ng-class="{ active: routeActive('/databases')}">
+                                <a href="#!/databases">RDS</a>
+                            </li>
+                            <li ng-class="{ active: routeActive('/dynamotables')}">
+                                <a href="#!/dynamotables">DynamoDB</a>
+                            </li>
+                            <li ng-class="{ active: routeActive('/redshift')}">
+                                <a href="#!/redshift">Redshift</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li ng-class="{ active: routeActive('/buckets')}">
+                        <a href="#!/buckets">S3</a>
+                    </li>
+                    <li ng-class="{ active: routeActive('/compliance')}">
+                        <a href="#!/compliance">Compliance</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container" ng-view></div>
+    <footer class="footer">
+        <div class="container">
+            <p class="text-center">
+                <small><a href="#!/about" style="color:white">Building Operational Visibility Into (n) Environments</a></small>
+            </p>
+        </div>
+    </footer>
+
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/ace.js"></script>
+    <script type="text/javascript" src="/js/angular.min.js"></script>
+    <script type="text/javascript" src="/js/angular-route.min.js"></script>
+    <script type="text/javascript" src="/js/ui-ace.js"></script>
+    <script type="text/javascript" src="/js/ui-bootstrap-tpls-2.0.1.min.js"></script>
+    <script type="text/javascript" src="/main.js"></script>
+    <script type="text/javascript" src="/lib/axios/dist/axios.standalone.js"></script>
+    <script type="text/javascript" src="/lib/CryptoJS/rollups/hmac-sha256.js"></script>
+    <script type="text/javascript" src="/lib/CryptoJS/rollups/sha256.js"></script>
+    <script type="text/javascript" src="/lib/CryptoJS/components/hmac.js"></script>
+    <script type="text/javascript" src="/lib/CryptoJS/components/enc-base64.js"></script>
+    <script type="text/javascript" src="/lib/url-template/url-template.js"></script>
+    <script type="text/javascript" src="/lib/apiGatewayCore/sigV4Client.js"></script>
+    <script type="text/javascript" src="/lib/apiGatewayCore/apiGatewayClient.js"></script>
+    <script type="text/javascript" src="/lib/apiGatewayCore/simpleHttpClient.js"></script>
+    <script type="text/javascript" src="/lib/apiGatewayCore/utils.js"></script>
+    <script type="text/javascript" src="/apigClient.js"></script>
+    <script type="text/javascript">
+        var apigClient = apigClientFactory.newClient({});
+    </script>
+    <script src="main.js"></script>
+
+</body>
+
+</html>

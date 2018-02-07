@@ -1,0 +1,32 @@
+<h1>
+ <div style="float">
+	 <div style="float:left;padding:10px 0 0 0">
+		 Roles<small ng-if="!loading"> (Total: {{(roles| filter:searchKeyword).length}})</small>
+	 </div>
+  <div style="padding:0 0 10px 0;float:right;width:400px" >
+        <span class="col-md-1" style="font-weight:bold;width=20px"><small>Search</small></span>
+        <span class="col-md-3" style="width:380px">
+         <input type="text" class="form-control" ng-model="searchKeyword"/>
+        </span>
+  </div>
+ </div>
+</h1>
+<div class="loader" ng-if="loading">Loading...</div>
+<table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+	    <th>Name</th>
+	    <th>Create Date</th>
+	    <th>AccountAlias</th>	
+	    <th>AccountNum</th>	
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="role in roles | filter: searchKeyword | orderBy: 'AccountNum'" ng-click="visitUser(user.AccountNum, user.Username)">
+		<td>{{role.Name}}</td>
+		<td>{{role.CreateDate | date:shortDate}}</td>
+		<td>{{role.AccountAlias}}</td>
+		<td>{{role.AccountNum}}</td>
+        </tr>
+    </tbody>
+</table>
