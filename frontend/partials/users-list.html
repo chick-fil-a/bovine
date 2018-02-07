@@ -1,0 +1,35 @@
+<h1>
+ <div style="float">
+	 <div style="float:left;padding:10px 0 0 0">
+		 Users<small ng-if="!loading"> (Total: {{(users | filter:searchKeyword).length}})</small>
+	 </div>
+  <div style="padding:0 0 10px 0;float:right;width:400px" >
+	  <!--<span class="col-md-1" style="font-weight:bold;width=20px"><small></span>-->
+        <span class="col-md-3" style="width:380px">
+		<small><span class="glyphicon glyphicon-search"></span></small>
+         <input type="text" class="form-control" ng-model="searchKeyword"/>
+        </span>
+  </div>
+ </div>
+</h1>
+<div class="loader" ng-if="loading">Loading...</div>
+<table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+	    <th>Username</th>
+	    <th>Create Date</th>
+	    <th>Password Set</th>
+	    <th>AccountAlias</th>	
+	    <th>AccountNum</th>	
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="user in users | filter: searchKeyword | orderBy: 'AccountNum'" ng-click="visitUser(user.AccountNum, user.Username)">
+		<td>{{user.Username}}</td>
+		<td>{{user.CreateDate | date:shortDate}}</td>
+		<td>{{user.PasswordSet}}</td>
+		<td>{{user.AccountAlias}}</td>
+		<td>{{user.AccountNum}}</td>
+        </tr>
+    </tbody>
+</table>
