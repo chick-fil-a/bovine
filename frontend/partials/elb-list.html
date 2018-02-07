@@ -1,0 +1,34 @@
+<h1>
+ <div style="float">
+	 <div style="float:left;padding:10px 0 0 0">
+		 Loadbalancers<small ng-if="!loading"> (Total: {{(elbs | filter:searchKeyword).length}})</small>
+	 </div>
+  <div style="padding:0 0 10px 0;float:right;width:400px" >
+	<span class="col-md-1" style="font-weight:bold;width=20px"><small>Search</small></span>
+        <span class="col-md-3" style="width:380px">
+         <input type="text" class="form-control" ng-model="searchKeyword"/>
+        </span>
+  </div>
+ </div>
+</h1>
+<div class="loader" ng-if="loading">Loading...</div>
+<table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+	    <th>Name</th>	
+	    <th>DNS</th>
+	    <th>Region</th>
+	    <th>AccountNum</th>
+	    <th>AccountAlias</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="elb in elbs | filter: searchKeyword | orderBy: 'AccountAlias'" ng-click="visitELB(elb.AccountNum,elb.ELBName)">
+		<td>{{elb.ELBName}}</td>
+		<td>{{elb.DNSName}}</td>
+		<td>{{elb.Region}}</td>
+		<td>{{elb.AccountNum}}</td>
+	        <td>{{elb.AccountAlias}}</td>
+        </tr>
+    </tbody>
+</table>

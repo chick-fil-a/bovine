@@ -1,0 +1,63 @@
+<h1>
+ <div style="float">
+	 <div style="float:left;padding:10px 0 0 0">
+		 Alerts<small> - Experimental</small>
+	 </div>
+  <div style="padding:0 0 10px 0;float:right;width:400px" >
+	<span class="col-md-1" style="font-weight:bold;width=20px"><small>Search</small></span>
+        <span class="col-md-3" style="width:380px">
+         <input type="text" class="form-control" ng-model="searchKeyword"/>
+        </span>
+</div>
+</div>
+</h1>
+<br>
+<br><p></p>
+<div class="loader" ng-if="loading">Loading...</div>
+<div class="container">
+<uib-tabset active="active">
+ <uib-tab index="0" heading="Compliance">
+<table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+	    <th>AccountNum</th>	
+	    <th>Alias</th>
+	    <th>RiskySG</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="alert in complianceAlerts | filter: searchKeyword | orderBy: '-riskysg.length'" ng-click="visit(alert.accountNum)">
+		<th><i ng-show="account.sticky" class="glyphicon glyphicon-lock"></i> {{alert.accountNum}}</th>
+		<td>{{alert.alias}}</td>
+		<td>{{(alert.riskysg).length}}</td>
+        </tr>
+    </tbody>
+</table>
+</uib-tab>
+<uib-tab index="1" heading="Security">
+<table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+	    <th>AccountNum</th>	
+	    <th>Alert</th>
+	    <th>EventName</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="alert in securityAlerts | filter: searchKeyword">
+		<th><i ng-show="account.sticky" class="glyphicon glyphicon-lock" ng-click="visit(alert.accountNum)"></i> {{alert.accountNum}}</th>
+		<td>{{alert.alertName}}</td>
+		<td>
+			<p ng-click="openLog(alert.log)">{{alert.log.eventName}}</p>
+		</td>
+		<td>
+			<button type="button" class="btn btn-primary btn-sm" ng-click="open(alert.log.eventID)">Acknowledge</button>
+			<button type="button" class="btn btn-danger btn-sm">Incident</button>
+		</td>
+        </tr>
+    </tbody>
+</table>
+
+</uib-tab>
+</uib-tabset>
+</div>

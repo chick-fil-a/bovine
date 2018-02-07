@@ -1,0 +1,13 @@
+{
+    "s3bucket":"example-bovine-html",
+    "reportsBucket":"example-bovine-reports",
+    "rulesBucket":"example-bovine-rules",
+    "auditLambda":"example-bovine-auditor",
+    "lambdaRole":"example-bovine-lambda-audit-role",
+    "lambdaPolicy":"example-bovine-lambda-audit-policy",
+    "accountId":"123456789012",
+    "domainName":"bovine.example.com",
+    "region":"us-east-1",
+    "cognitoId":"",
+    "authUrl":""
+}

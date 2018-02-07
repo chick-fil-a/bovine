@@ -1,0 +1,14 @@
+{
+    "s3bucket":"rad-bovine-html",
+    "reportsBucket":"rad-bovine-reports",
+    "rulesBucket":"rad-bovine-rules",
+    "auditLambda":"rad-bovine-auditor",
+    "lambdaRole":"rad-bovine-lambda-audit-role",
+    "lambdaAssumeRole":"secaudit-lambda-assume",
+    "lambdaPolicy":"rad-bovine-lambda-audit-policy",
+    "accountId":"152738380384",
+    "domainName":"bovine.rad-sandbox.cfadevelop.com",
+    "region":"us-east-1",
+    "authorizerArn":"",
+    "authUrl": ""
+}
