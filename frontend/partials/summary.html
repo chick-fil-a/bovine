@@ -1,0 +1,79 @@
+<h1>Summary</h1>
+<div class="loader" ng-if="loading">Loading...</div>
+<div class="container" ng-if="!loading">
+ <div class="row">	
+  <div class="col-lg-2 col-md-2 col-sm-2">
+   <div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3>Accounts</h3>
+	</div>
+	<div class="loader" ng-if="accountLoading">Loading...</div>
+	<div class="panel-body" ng-if="!accountLoading">
+		<h2><p><div id="accounts" style="text:bold" ng-click="visitAccounts()">{{accountCount.AccountsCount}}</div></p></h2>
+ 	</div>
+   </div>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2">
+   <div class="panel panel-primary">
+    <div class="panel-heading">
+		<h3>Users</h3>
+    </div>
+	<div class="loader" ng-if="userLoading">Loading...</div>
+    <div class="panel-body" ng-if="!userLoading">
+	    <h2><p><div id="users" style="text:bold" ng-click="visitUsers()">{{getUserTotalCount()}}</div></p></h2>
+	    <h5><small>{{getUserAccountMax().Alias}} ({{getUserAccountMax().UserCount}})</small></h4>
+    </div>
+   </div>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2">
+   <div class="panel panel-primary">	  
+     <div class="panel-heading">
+		<h3>Instances</h3>
+    </div>
+	<div class="loader" ng-if="instanceLoading">Loading...</div>
+    <div class="panel-body" ng-if="!instanceLoading">
+	    <h2><p><div id="instances" style="text:bold" ng-click="visitInstances()">{{getInstanceTotalCount()}}</div></p></h2>
+	    <h5><small>{{getInstanceAccountMax().Alias}} ({{getInstanceAccountMax().InstanceCount}})</small></h4>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div ng-if="!instanceCountCollapsed">
+  <table class="table table-hover" ng-if="!loading">
+	  <caption><h3>Instances</h3></caption>
+	  <thead>
+                  <tr>
+                          <th>AccountNum</th>
+			  <th>Alias</th>
+			  <th>Count</th>
+                         </tr>
+                 </thead>
+                 <tbody>
+                         <tr ng-repeat="account in instanceCount | orderBy:'-InstanceCount'">
+                          <td>{{account.Account}}</td>
+                          <td>{{account.Alias}}</td>
+                          <td>{{account.InstanceCount}}</td>
+                  </tr>
+          </tbody>
+  </table>
+ </div>
+<div ng-if="!userCountCollapsed">
+  <table class="table table-hover" ng-if="!loading">
+	  <caption><h3>Users</h3></caption>
+          <thead>
+                  <tr>
+                          <th>AccountNum</th>
+			  <th>Alias</th>
+			  <th>UserCount</th>
+                         </tr>
+                 </thead>
+                 <tbody>
+                         <tr ng-repeat="account in userCount | orderBy:'-UserCount'">
+                          <td>{{account.Account}}</td>
+                          <td>{{account.Alias}}</td>
+                          <td>{{account.UserCount}}</td>
+                  </tr>
+          </tbody>
+  </table>
+ </div>

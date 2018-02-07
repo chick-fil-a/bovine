@@ -1,0 +1,6 @@
+* add cloudformation templates for the pre-requisites (Dynamo table, cognito user pool, custom domain)
+* shift all API calls that grab all accounts to lambda fanout
+  - currently working in instancecount, usercount, getinstances
+* Update UI to newer framework
+* add custom authorizer for main endpoint to authorize cookie header
+* Fix lambda cold start issue on getinstances. Currently might time out depending on number of accounts/instances

@@ -1,0 +1,39 @@
+	<h1 ng-click="visitAccount(account.accountNum)">
+		{{bucket.Name}} <small>- {{bucket.AccountNum}}</small>
+	</h1>
+	<div class="loader" ng-if="loading">Loading...</div>
+<table class="table table-hover" ng-if="!loading">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Global Access</th>
+        </tr>
+    </thead>
+    <tbody>
+<tr>
+                <td>{{bucket.Name}}</td>
+                <td>{{bucket.GlobalAccess}}</td>
+	</tr>    
+</tbody>
+</table>
+<div class="container">
+<table class="table table-hover" ng-if="!loading">
+	<caption>Objects</caption>
+	<thead>
+<tr>
+	<th>Name</th>
+	<th>ModifiedDate</th>
+	<th>Encryption</th>
+	<th>size</th>
+</tr>
+</thead>
+<tbody>
+	<tr ng-repeat="object in objects">
+		<td>{{object.Key}}</td>
+		<td>{{object.ModifiedDate | date:shortDate}}</td>
+		<td>{{object.Encryption}}</td>
+		<td>{{object.Size}}</td>
+	</tr>
+</tbody>
+</table>
+</div>

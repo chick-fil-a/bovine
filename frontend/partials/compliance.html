@@ -1,0 +1,171 @@
+<style type="text/css">
+    form.tab-form-demo .tab-pane {
+        margin: 20px 20px;
+    }
+</style>
+<h1>
+    {{alerts.alias}}
+    <small>- {{alerts.accountNum}}
+        <i ng-show="account.sticky" class="glyphicon glyphicon-lock"></i>
+    </small>
+    <div style="float:right;width:400px">
+        <span class="col-md-1" style="font-weight:bold;width:20px">
+            <small>Search</small>
+        </span>
+        <span class="col-md-3" style="width:380px">
+            <input type="text" class="form-control" ng-model="searchKeyword" />
+        </span>
+    </div>
+</h1>
+<div class="loader" ng-if="loading">Loading...</div>
+
+<br>
+<div class="container">
+    <uib-tabset active="active">
+        <uib-tab index="0" heading="Infrastructure Policy Violations (Total: {{alerts.groupExceptions.infrastructure.count}})">
+            <div>
+                <table class="table table-hover" ng-if="!loading">
+                    <caption>Infrastructure Policy summary</caption>
+                    <thead>
+                        <tr>
+                            <th>Policy</th>
+                            <th>Risk Category</th>
+                            <th>Resource(s)</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="policy in alerts.groupExceptions.infrastructure.policies | filter:searchKeyword | orderBy: 'groupExceptions.infrastructure.policies.policyName'">
+                            <td>{{policy.policyName}}</td>
+                            <td>{{policy.riskCategory}}</td>
+                            <td>
+                                <table class="table">
+                                    <tr ng-repeat="resource in policy.allParameters">
+                                        <td>{{resource.Id}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>{{policy.formattedDescription}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </uib-tab>
+        <uib-tab index="1" heading="Account Policy Violations (Total: {{alerts.groupExceptions.account.count}})">
+                <div>
+                    <table class="table table-hover" ng-if="!loading">
+                        <caption>Account Policy summary</caption>
+                        <thead>
+                            <tr>
+                                <th>Policy</th>
+                                <th>Risk Category</th>
+                                <th>Resource(s)</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="policy in alerts.groupExceptions.account.policies | filter:searchKeyword | orderBy: 'groupExceptions.account.policies.policyName'">
+                                <td>{{policy.policyName}}</td>
+                                <td>{{policy.riskCategory}}</td>
+                                <td>
+                                        <table class="table">
+                                            <tr ng-repeat="admin in policy.allParameters">
+                                                <td>{{admin.Id}}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                <td>{{policy.description}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </uib-tab>
+        <uib-tab index="2" heading="Storage Policy Violations (Total: {{alerts.groupExceptions.storage.count}})">
+            <div>
+                <table class="table table-hover" ng-if="!loading">
+                    <caption>Storage Policy summary</caption>
+                    <thead>
+                        <tr>
+                            <th>Policy</th>
+                            <th>Resource(s)</th>
+                            <th>Risk Category</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="policy in alerts.groupExceptions.storage.policies | filter:searchKeyword | orderBy: 'groupExceptions.storage.policies.policyName'">
+                            <td>{{policy.policyName}}</td>
+                            <td>
+                                    <table class="table">
+                                        <tr ng-repeat="bucket in policy.allParameters">
+                                            <td>{{bucket.Id}}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            <td>{{policy.riskCategory}}</td>
+                            <td>{{policy.formattedDescription}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </uib-tab>
+        <uib-tab index="3" heading="IAM Policy Violations (Total: {{alerts.groupExceptions.iam.count}})">
+            <div>
+                <table class="table table-hover" ng-if="!loading">
+                    <caption>IAM Policy summary</caption>
+                    <thead>
+                        <tr>
+                            <th>Policy</th>
+                            <th>Resource(s)</th>
+                            <th>Risk Category</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="policy in alerts.groupExceptions.iam.policies | filter:searchKeyword | orderBy: 'groupExceptions.iam.policies.policyName'">
+                            <td>{{policy.policyName}}</td>
+                            <td>
+                                    <table class="table">
+                                        <tr ng-repeat="user in policy.allParameters">
+                                            <td>{{user.Id}}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            <td>{{policy.riskCategory}}</td>
+                            <td>{{policy.formattedDescription}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </uib-tab>
+        <uib-tab index="4" heading="Database Policy Violations (Total: {{alerts.groupExceptions.database.count}})">
+            <div>
+                <table class="table table-hover" ng-if="!loading">
+                    <caption>Database Policy summary</caption>
+                    <thead>
+                        <tr>
+                            <th>Policy</th>
+                            <th>Resource(s)</th>
+                            <th>Risk Category</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="policy in alerts.groupExceptions.database.policies | filter:searchKeyword | orderBy: 'groupExceptions.database.policies.policyName'">
+                            <td>{{policy.policyName}}</td>
+                            <td>
+                                    <table class="table">
+                                        <tr ng-repeat="database in policy.allParameters">
+                                            <td>{{database.Id}}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            <td>{{policy.riskCategory}}</td>
+                            <td>{{policy.formattedDescription}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>
