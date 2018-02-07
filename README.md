@@ -41,6 +41,13 @@ appropriate S3 bucket for the stage.
  > sh deploy-content.sh <aws credential profile> <stage>
 
 
+What's Next?
+------------
+*   Better documentation
+*   Unit tests
+*   Frontend framework update (Angular 4? React?)
+*   Compliance rule engine
+
 Additional Info
 ---------------
 You can find additional information on Chick-fil-A's journey around this problem here: https://www.youtube.com/watch?v=_0BCJLIxowQ
