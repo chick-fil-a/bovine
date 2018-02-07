@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  RoleName:
+    Type: String
+    Description: Rolename for 
+  BOVINERoleName:
+    Type: String
+    Description: BOVI(n)E assume role
+  AccountNum:
+    Type: String
+    Description: Account number of BOVI(n)E account
+Resources:
+  AssumeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: 
+        Ref: RoleName
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            AWS: 
+              - !Sub "arn:aws:iam::${AccountNum}:role/${BOVINERoleName}"
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/SecurityAudit
+        - arn:aws:iam::aws:policy/ReadOnlyAccess

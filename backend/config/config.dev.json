@@ -1,0 +1,14 @@
+{
+    "s3bucket":"dev-bovine-html",
+    "reportsBucket":"dev-bovine-reports",
+    "rulesBucket":"dev-bovine-rules",
+    "auditLambda":"dev-auditor",
+    "lambdaRole":"dev-portal-lambda-audit-role",
+    "lambdaAssumeRole":"dev-secaudit-lambda-assume",
+    "lambdaPolicy":"dev-bovine-lambda-audit-policy",
+    "accountId":"681174758231",
+    "domainName":"portal.sec-dev.cfadevelop.com",
+    "region":"us-east-1",
+    "authorizerArn":"arn:aws:cognito-idp:us-east-1:681174758231:userpool/us-east-1_mRLbzljeN",
+    "authUrl":"https://dev-portal.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=CFA-SSO&redirect_uri=https://portal.sec-dev.cfadevelop.com/login&response_type=TOKEN&client_id=6mc1sqbs9b4p1pmd0k5pbpk4fa&scope=openid"
+}
