@@ -44,11 +44,13 @@ appropriate S3 bucket for the stage.
 What's next?
 ------------
 *   Better documentation
-*   Unit tests
-*   Frontend framework update (Angular 4? React?)
+*   Unit tests -- we are working on them but welcome contributions
+*   Frontend framework update (Angular 4? React? Please share if you have thoughts)
 *   Compliance rule engine
 
 Additional Info
 ---------------
 You can find additional information on Chick-fil-A's journey around this problem here: https://www.youtube.com/watch?v=_0BCJLIxowQ
+
+We welcome ideas around how to improve this project.
 
