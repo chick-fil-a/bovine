@@ -8,6 +8,7 @@ and governance. BOVI(n)E helps provide a 10,000 foot view of all your AWS accoun
 
 BOVI(n)E is a fully serverless single page application leveraging AngularJS, AWS API Gateway, AWS Lambda, and AWS DynamoDB. 
 
+[User Guide](docs/userguide.md)
 [Quickstart Guide](docs/quickstart.md)
 
 Runtime
