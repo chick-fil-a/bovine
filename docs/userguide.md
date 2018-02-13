@@ -16,7 +16,7 @@ To view the details of a specific instance, click the instance you would like to
 
 To view all IAM users across all of your accounts, click the IAM dropdown at top and choose Users.
 
-![Alt text](docs/images/users.png?raw=true "Users")
+![Alt text](images/users.png?raw=true "Users")
 
 To view the details of a specific IAM user, click the user you would like to view. You will see a high level overview of that user with details such as the creation date, whether or not a password is set, and the IAM policies associated to the user.
 
