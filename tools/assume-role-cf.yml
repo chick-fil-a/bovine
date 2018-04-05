@@ -2,10 +2,10 @@ AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   RoleName:
     Type: String
-    Description: Rolename for 
+    Description: Rolename for BOVI(n)E to assume
   BOVINERoleName:
     Type: String
-    Description: BOVI(n)E assume role
+    Description: BOVI(n)E role in security account
   AccountNum:
     Type: String
     Description: Account number of BOVI(n)E account

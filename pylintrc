@@ -1,0 +1,5 @@
+[SIMILARITIES]
+min-similarity-lines=15
+
+[MESSAGES CONTROL]
+disable=relative-import,no-else-return,arguments-differ,method-hidden,too-many-locals

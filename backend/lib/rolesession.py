@@ -1,5 +1,9 @@
-import boto3
+""" AWS IAM Role session wrapper. """
 import os
+
+import boto3
+from botocore.exceptions import ClientError
+
 
 ASSUME_ROLE = os.environ['ASSUME_ROLE']
 
@@ -17,18 +21,19 @@ def assume_crossact_audit_role(session, account_num, region, role=None):
         assume_role = ASSUME_ROLE
     else:
         assume_role = role
-    #print "[D] Assume role: %s" % assume_role
 
     assume_arn = 'arn:aws:iam::%s:role/%s' % (account_num, assume_role)
     client = session.client('sts')
     try:
         response = client.assume_role(RoleArn=assume_arn,
                                       RoleSessionName=assume_role)
-    except Exception as e:
-        #raise Exception(
+    except ClientError:
+        # raise Exception(
         #    "[X] Unable to assume role %s: %s." % (assume_role, e.message))
-        # Not sure how to handle this. Needs to return None so the upstream calls will continue gracefully.
-        # Ex: when trying to call this function across all accounts and one account is broken, the entire call fails
+        # Not sure how to handle this. Needs to return None so the upstream
+        # calls will continue gracefully.
+        # Ex: when trying to call this function across all accounts and one
+        # account is broken, the entire call fails
         return None
     creds = response['Credentials']
     access_key = creds['AccessKeyId']

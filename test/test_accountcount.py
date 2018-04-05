@@ -13,5 +13,6 @@ class AccountcountTest(unittest.TestCase):
         count = accountcount.account_count()
         self.assertIsInstance(count['Summary']['AccountsCount'], int)
 
+ 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,14 @@
+{
+    "s3bucket":"prod-bovine-html",
+    "reportsBucket":"prod-portal-reports",
+    "rulesBucket":"prod-portal-rules",
+    "auditLambda":"prod-portal-auditor",
+    "lambdaRole":"portal-lambda-audit-role",
+    "lambdaAssumeRole":"secaudit-lambda-assume",
+    "lambdaPolicy":"prod-bovine-lambda-audit-policy",
+    "accountId":"854644529215",
+    "domainName":"portal.cfasec.com",
+    "region":"us-east-1",
+    "authorizerArn":"arn:aws:cognito-idp:us-east-1:854644529215:userpool/us-east-1_3fWz3hkgh",
+    "authUrl":"https://prod-portal.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=md7olc4mp6nc501t2hp6f8a4e&redirect_uri=https://portal.cfasec.com/login"
+}

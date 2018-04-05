@@ -1,13 +1,16 @@
-
+""" BOVI(n)E getdbs endpoint """
 import datetime
 from time import mktime
+import json
+
 
 import boto3
 from lib import rolesession
 from lib.awsaccounts import AwsAccounts
-import json
+
 
 class MyEncoder(json.JSONEncoder):
+    """ JSON encoder for datetime """
     def default(self, obj):
         if isinstance(obj, datetime.datetime):
             return int(mktime(obj.timetuple()))
@@ -15,11 +18,11 @@ class MyEncoder(json.JSONEncoder):
 
 
 def get_dbs(account, region):
+    """ Get all databases from AWS account. """
     rds_data = []
     aws_accounts = AwsAccounts()
     if not account:
         accounts = aws_accounts.all()
-        print(accounts)
         session = boto3.session.Session()
         for cur_account in accounts:
             assume = rolesession.assume_crossact_audit_role(
@@ -73,30 +76,29 @@ def get_dbs(account, region):
                          AccountNum=account_number,
                          AccountAlias=alias))
     else:
-        return dict(Error="Account not found."),404
-    return dict(Databases=rds_data),200
+        return dict(Error="Account not found."), 404
+    return dict(Databases=rds_data), 200
 
 
 def obtain_db_list(session):
+    """ List all RDS instances """
     client = session.client('rds')
     db_instance_response = client.describe_db_instances()
     return db_instance_response
 
-def lambda_handler(event,context):
+
+def lambda_handler(*kwargs):
+    """ Lambda handler """
     account = None
     region = None
-    query_params = event.get('queryStringParameters')
-    if query_params:    
+    query_params = kwargs[0].get('queryStringParameters')
+    if query_params:
         account = query_params.get('account')
         region = query_params.get('region')
-    results = get_dbs(account,region)
-    body,status = results
+    results = get_dbs(account, region)
+    body, status = results
     response = {
         "statusCode": status,
         "body": json.dumps(body)
     }
     return response
-
-if __name__ == "__main__":
-    resp = lambda_handler(None,None)
-    print resp
