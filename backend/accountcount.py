@@ -1,8 +1,11 @@
-from lib.awsaccounts import AwsAccounts
+""" BOVI(n)E number of accounts endpoint. """
 import json
+
+from lib.awsaccounts import AwsAccounts
 
 
 def account_count():
+    """ Get count of accounts """
     accounts = AwsAccounts()
     accounts_count = accounts.count()
     cred = dict(AccountsCount=accounts_count)
@@ -10,7 +13,10 @@ def account_count():
     print final
     return final
 
-def lambda_handler(context,event):
+
+def lambda_handler(*kwargs):
+    """ Lambda handler """
+    print kwargs
     results = account_count()
     body = results
     response = {
@@ -18,7 +24,3 @@ def lambda_handler(context,event):
         "body": json.dumps(body)
     }
     return response
-
-if __name__ == "__main__":
-    resp = lambda_handler(None,None)
-    print resp

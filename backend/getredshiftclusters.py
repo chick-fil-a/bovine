@@ -1,42 +1,33 @@
-
-import datetime
-from time import mktime
+""" BOVI(n)E getredshiftclusters endpoint """
+import json
 
 import boto3
 from lib import rolesession
 from lib.awsaccounts import AwsAccounts
 from lib import mp_wrappers
-import json
-
-class MyEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, datetime.datetime):
-            return int(mktime(obj.timetuple()))
-        return json.JSONEncoder.default(self, obj)
 
 
 def get_redshift_clusters(account, region):
+    """ Get all redshift clusters from all accounts. """
     redshift_data = []
     aws_accounts = AwsAccounts()
     accounts = aws_accounts.all()
 
     if not account:
         session = boto3.session.Session()
-        for account in accounts:
+        for acc in accounts:
             alias = None
             assume = rolesession.assume_crossact_audit_role(
                 session,
-                account['accountNum'],
+                acc['accountNum'],
                 region)
 
             if assume:
                 client = assume.client('redshift')
-                #redshift_list = client.describe_clusters()['Clusters']
-                redshift_list = mp_wrappers.describe_clusters(client)['Clusters']
-                try:
-                    alias = account['alias']
-                except:
-                    pass
+                redshift_list = mp_wrappers.describe_clusters(client)[
+                    'Clusters']
+                alias = acc.get('alias')
+
                 for cluster in redshift_list:
                     redshift_data.append(
                         dict(Region=region,
@@ -47,7 +38,7 @@ def get_redshift_clusters(account, region):
                              PubliclyAccessible=(
                                  cluster['PubliclyAccessible']),
                              Encrypted=(cluster['Encrypted']),
-                             AccountNum=account['accountNum'],
+                             AccountNum=acc['accountNum'],
                              AccountAlias=alias))
             else:
                 pass
@@ -60,12 +51,8 @@ def get_redshift_clusters(account, region):
         alias = None
         if assume:
             client = assume.client('redshift')
-            #redshift_list = client.describe_clusters()['Clusters']
             redshift_list = mp_wrappers.describe_clusters(client)['Clusters']
-            try:
-                alias = account['alias']
-            except:
-                pass
+            alias = account.get('alias')
             for cluster in redshift_list:
                 redshift_data.append(
                     dict(Region=region,
@@ -78,24 +65,22 @@ def get_redshift_clusters(account, region):
                          AccountNum=account,
                          AccountAlias=alias))
     else:
-        return dict(Error='Account not found'),404
-    return dict(Clusters=redshift_data),200
+        return dict(Error='Account not found'), 404
+    return dict(Clusters=redshift_data), 200
 
-def lambda_handler(event,context):
+
+def lambda_handler(*kwargs):
+    """ Lambda handler """
     account = None
     region = None
-    query_params = event.get('queryStringParameters')
-    if query_params:    
+    query_params = kwargs[0].get('queryStringParameters')
+    if query_params:
         account = query_params.get('account')
         region = query_params.get('region')
-    results = get_redshift_clusters(account,region)
+    results = get_redshift_clusters(account, region)
     body = results
     response = {
         "statusCode": 200,
         "body": json.dumps(body)
     }
     return response
-
-if __name__ == "__main__":
-    resp = lambda_handler(None,None)
-    print resp

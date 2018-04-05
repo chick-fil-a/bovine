@@ -4,7 +4,7 @@
 	        }
 	</style>
 <h1>
-        {{account.alias}} <small>- <a href="https://signin.aws.amazon.com/switchrole?account={{account.accountNum}}&roleName=CFASecurityAudit&displayName={{account.alias}}" target="_blank">{{account.accountNum}}</a> <i ng-show="account.sticky" class="glyphicon glyphicon-lock"></i></small>
+        {{account.alias}} <small>- <a href="https://signin.aws.amazon.com/switchrole?account={{account.accountNum}}&roleName={{audit_role}}&displayName={{account.alias}}" target="_blank">{{account.accountNum}}</a> <i ng-show="account.sticky" class="glyphicon glyphicon-lock"></i></small>
 	<div style="float:right;width:400px" >
 		<span class="col-md-1" style="font-weight:bold;width:20px"><small>Search</small></span>
          <span class="col-md-3" style="width:380px">
@@ -37,7 +37,7 @@
 		<td>{{account.unusedsg}}</td>
 		<td>{{account.bastion}}</td>
 		<td>{{account.admins}}</td>
-		<td><a href="https://signin.aws.amazon.com/switchrole?account={{account.accountNum}}&roleName=CFASecurityAudit&displayName={{account.alias}}" target="_blank">Assume Role</a>
+		<td><a href="https://signin.aws.amazon.com/switchrole?account={{account.accountNum}}&roleName={{audit_role}}&displayName={{account.alias}}" target="_blank">Assume Role</a>
         </tr>
     </tbody>
   </table>

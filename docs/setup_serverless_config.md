@@ -2,8 +2,7 @@ Creating a BOVI(n)E Config File
 ---------------------------------
 BOVI(n)E leverages the serverless.com framework for deployment. Before you can deploy BOVI(n)E backend, you need to create a serverless config file. Below is an example config:
 
-```json
-{
+> {
     "s3bucket":"example-bovine-html",
     "reportsBucket":"example-bovine-reports",
     "rulesBucket":"example-bovine-rules",
@@ -17,7 +16,6 @@ BOVI(n)E leverages the serverless.com framework for deployment. Before you can d
     "authorizerArn":"arn:aws:cognito-idp:us-east-1:123456789012:userpool/us-east-1_1q2w3e4r",
     "authUrl":"https://bovine-example.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=123456789asdfv&redirect_uri=https://example.bovine.com/login"
 }
-```
 
 * s3bucket = The S3 bucket you want to host your BOVI(n)E static content
 * reportsBucket = The S3 bucket you want to store your audit reports
