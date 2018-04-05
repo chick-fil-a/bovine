@@ -1,10 +1,11 @@
+""" BOVI(n)E getaccounts endpoint """
+import json
 
 import boto3
-from boto3.dynamodb.conditions import Key
-import json
 
 
 def get_accounts():
+    """ Get all AWS accounts from DynamoDB """
     dynamo = boto3.resource('dynamodb').Table('AWS-Accounts-Table')
     response = dynamo.scan(
         AttributesToGet=['accountNum',
@@ -12,11 +13,12 @@ def get_accounts():
                          'email',
                          'AccountOwner',
                          'remediate'])
-    #for i in response['Items']:
-    #    print(i)
     return response['Items']
-    
-def lambda_handler(context,event):
+
+
+def lambda_handler(*kwargs):
+    """ Lambda handler """
+    print kwargs
     results = get_accounts()
     body = results
     response = {
@@ -24,8 +26,3 @@ def lambda_handler(context,event):
         "body": json.dumps(body)
     }
     return response
-
-if __name__ == "__main__":
-    resp = lambda_handler(None,None)
-    print resp
-

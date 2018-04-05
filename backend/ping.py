@@ -1,6 +1,12 @@
+""" Simple ping endpoint. """
 import json
 
+
 def ping(operation, payload):
+    """ Ping endpoint
+    :param operation: Ping endpoint operation
+    :param payload: Ping endpoing response payload
+    """
     operations = {
         'ping': lambda x: 'pong',
         'health': lambda x: 'green',
@@ -8,21 +14,22 @@ def ping(operation, payload):
     }
 
     if operation in operations:
-        v = operations[operation](payload)
-        return v,200
+        value = operations[operation](payload)
+        return value, 200
     else:
         raise ValueError('Unrecognized operation "{}"'.format(operation))
 
-def lambda_handler(event,context):
-    query_params = event.get('queryStringParameters')
+
+def lambda_handler(*kwargs):
+    """ Ping endpoint lambda
+    :param event: Lambda event
+    :param context: Lambda context
+    """
+    query_params = kwargs[0].get('queryStringParameters')
     operation = query_params.get('operation')
-    body,status = ping(operation,operation)
+    body, status = ping(operation, operation)
     response = {
         "statusCode": status,
         "body": json.dumps(body)
     }
     return response
-
-if __name__ == "__main__":
-    resp = lambda_handler(None,None)
-    print resp
