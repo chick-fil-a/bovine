@@ -1,67 +1,56 @@
-
-import datetime
-from time import mktime
-
-import boto3
-from lib import rolesession
+""" BOVI(n)E gets3bucket endpoint. """
 import json
 
-class MyEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, datetime.datetime):
-            return int(mktime(obj.timetuple()))
-        return json.JSONEncoder.default(self, obj)
+import boto3
+from botocore.exceptions import ClientError
+
+from lib import rolesession
+
 
 def s3_acl_is_global(acl):
+    """ Return bool if s3 has global allow ACL. """
     global_uri = 'http://acs.amazonaws.com/groups/global/AllUsers'
-    return acl['Grantee']['URI'] == global_uri
+    grantee = acl.get('Grantee')
+    return grantee.get('URI') == global_uri
+
 
 def get_s3_bucket(account, bucket, region='us-east-1'):
+    """ Get s3 bucket from specific account.
+    :param account: AWS account
+    :param bucket: S3 bucket
+    :param region: AWS region
+    """
     if account.isdigit() and len(account) == 12:
         account = account
     else:
-        return dict(Error='Account Not Found.'),404
+        return dict(Error='Account Not Found.'), 404
     obj_data = []
     session = boto3.session.Session()
     assume = rolesession.assume_crossact_audit_role(
         session, account, region)
     if assume:
-        s3 = assume.client('s3')
+        s3_client = assume.client('s3')
 
         s3_global = False
         try:
-            s3_acls = s3.get_bucket_acl(Bucket=bucket)['Grants']
-        except Exception as e:
-            return dict(Error=e),500
+            s3_acls = s3_client.get_bucket_acl(Bucket=bucket)['Grants']
+        except ClientError as err:
+            return dict(Error=err), 500
         for acl in s3_acls:
-            try:
-                if s3_acl_is_global(acl):
-                    s3_global = True
-            except:
-                pass
-        try:
-            s3_objects = s3.list_objects(Bucket=bucket)['Contents']
-        except Exception as e:
-            #Exception is likely a key error when the bucket has no contents.
-            #There may be a better way to handle it.
-            s3_objects = []
-        if len(s3_objects) > 0:
+            s3_global = s3_acl_is_global(acl)
+        s3_objects = s3_client.list_objects(Bucket=bucket).get('Contents')
+        if s3_objects:
             for obj in s3_objects:  # definately a bug,
                                     # if we get no buckets, this still happens
-                s3_obj = s3.head_object(Bucket=bucket, Key=obj['Key'])
-                obj_key = obj['Key']
-                obj_last_modified = s3_obj['LastModified'].isoformat()
-                obj_size = s3_obj['ContentLength']
-                obj_enc = s3_obj.get('ServerSideEncryption')
-                obj_storage = s3_obj.get('StorageClass')
+                s3_obj = s3_client.head_object(Bucket=bucket, Key=obj['Key'])
                 obj_data.append(dict(
-                    Key=obj_key,
-                    ModifiedDate=obj_last_modified,
-                    Size=obj_size,
-                    Encryption=obj_enc,
-                    StorageType=obj_storage))
+                    Key=obj['Key'],
+                    ModifiedDate=s3_obj['LastModified'].isoformat(),
+                    Size=s3_obj['ContentLength'],
+                    Encryption=s3_obj.get('ServerSideEncryption'),
+                    StorageType=s3_obj.get('StorageClass')))
         else:
-            print("Bucket has no contents")
+            print "Bucket has no contents"
 
         result = dict(
             Bucket=dict(
@@ -71,28 +60,28 @@ def get_s3_bucket(account, bucket, region='us-east-1'):
             Objects=obj_data)
     else:
         result = dict(Bucket=dict(Error='Unable to assume account'))
-    return result,200
+    return result, 200
 
-def lambda_handler(event,context):
+
+def lambda_handler(*kwargs):
+    """ Lambda handler function
+    :param event: Lambda event
+    :param context: Lambda context
+    """
     account = None
     bucket = None
     region = None
-    query_params = event.get('queryStringParameters')
-    if query_params:    
+    query_params = kwargs[0].get('queryStringParameters')
+    if query_params:
         account = query_params.get('account')
         bucket = query_params.get('bucket')
         region = query_params.get('region')
-        results = get_s3_bucket(account,bucket,region)
-        body,status = results
-        #print body
+        results = get_s3_bucket(account, bucket, region)
+        body, status = results
     else:
-        body = {"Message":"Bucket not found."}
+        body = {"Message": "Bucket not found."}
     response = {
         "statusCode": status,
         "body": json.dumps(body)
     }
     return response
-
-if __name__ == "__main__":
-    resp = lambda_handler(None,None)
-    print resp
