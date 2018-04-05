@@ -12,13 +12,15 @@ S3_BUCKET = os.environ['S3_BUCKET']
 STAGE = os.environ['STAGE']
 AUTH_URL = os.environ['AUTH_URL']
 URL = os.environ['URL']
+AUDIT_ROLE = os.environ['AUDIT_ROLE']
 
 
 def build_config():
     """ Build BOVI(n)E auth config. """
     config = {
         "auth_url": AUTH_URL,
-        "url": URL
+        "url": URL,
+        "audit_role": AUDIT_ROLE
     }
     return config
 
