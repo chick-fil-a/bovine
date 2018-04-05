@@ -30,5 +30,6 @@ htmlcov/
 
 # Frontend config
 frontend/config.json
+backend/config/config.*.json
 
 
