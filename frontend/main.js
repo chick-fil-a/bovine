@@ -32,6 +32,7 @@ var access_token = getCookie('portal_cookie');
 //console.log(id_token);
 var app_url = config.url;
 var auth_url = config.auth_url;
+var audit_role = config.audit_role;
 endpoint = "https://" + app_url + "/api";
 console.log(endpoint);
 
@@ -894,6 +895,7 @@ app.config(["$routeProvider", "$sceDelegateProvider",
             $location.path("users/" + accountNum + "/" + user);
         };
 
+        $scope.audit_role = audit_role;
         $scope.instancesCollapsed = true;
         $scope.usersCollapsed = true;
         $scope.elbsCollapsed = true;
