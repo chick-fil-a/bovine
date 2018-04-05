@@ -1,0 +1,14 @@
+{
+    "s3bucket":"rad-bovine-html",
+    "reportsBucket":"rad-bovine-reports",
+    "rulesBucket":"rad-bovine-rules",
+    "auditLambda":"rad-bovine-auditor",
+    "lambdaRole":"rad-bovine-lambda-audit-role",
+    "lambdaAssumeRole":"rad-bovine-assume-role",
+    "lambdaPolicy":"rad-bovine-lambda-audit-policy",
+    "accountId":"059974371382",
+    "domainName":"bovine.sec-dev.cfadevelop.com",
+    "region":"us-east-1",
+    "authorizerArn":"arn:aws:cognito-idp:us-east-1:059974371382:userpool/us-east-1_DqtULAq3J",
+    "authUrl": "https://rad-bovine.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=2t756g7omktf6bh677lk5lau95&redirect_uri=https://bovine.sec-dev.cfadevelop.com/login"
+}

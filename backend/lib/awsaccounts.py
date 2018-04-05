@@ -1,8 +1,11 @@
+""" AWS Accounts class. """
 import boto3
 from boto3.dynamodb.conditions import Key, Attr
 
 
-class AwsAccounts:
+class AwsAccounts(object):
+    """ AWS Accounts class """
+
     m_dynamo = None
     """ :type: pyboto3.dynamodb """
 
@@ -33,10 +36,10 @@ class AwsAccounts:
             KeyConditionExpression=Key('accountNum').eq(str(account_number)))
         accounts = result['Items']
 
-        if len(accounts) == 0:
-            return None
-        else:
+        if accounts:
             return accounts[0]
+
+        return None
 
     def with_alias(self, alias):
         """ Find the account with a given alias
@@ -60,7 +63,7 @@ class AwsAccounts:
                     return cur
         return None
 
-    def all(self,attr=None):
+    def all(self, attr=None):
         """ Find the account with a given alias
 
         :param attr: list of attributes to get
@@ -69,7 +72,8 @@ class AwsAccounts:
         if not attr:
             scan = self.m_table.scan(Select='ALL_ATTRIBUTES')
         else:
-            scan = self.m_table.scan(Select='SPECIFIC_ATTRIBUTES',AttributesToGet=attr)
+            scan = self.m_table.scan(
+                Select='SPECIFIC_ATTRIBUTES', AttributesToGet=attr)
         return scan['Items']
 
     def count(self):
@@ -79,7 +83,7 @@ class AwsAccounts:
             Select='COUNT')
         return accounts['Count']
 
-    def add(self,attr):
+    def add(self, attr):
         """ Add an account with given attributes
         :param attr: list of attributes to add (accountNum is required)
         :return bool
@@ -87,12 +91,12 @@ class AwsAccounts:
         if attr:
             resp = self.m_table.put_item(
                 Item={
-                    'accountNum':str(attr.get('accountNum')),
-                    'alias':str(attr.get('alias')),
-                    'email':str(attr.get('email')),
-                    'AccountOwner':str(attr.get('owner'))
+                    'accountNum': str(attr.get('accountNum')),
+                    'alias': str(attr.get('alias')),
+                    'email': str(attr.get('email')),
+                    'AccountOwner': str(attr.get('owner'))
                 }
             )
-            return True
+            if resp:
+                return True
         return False
-

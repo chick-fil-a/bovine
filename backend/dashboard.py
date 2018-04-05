@@ -1,16 +1,22 @@
 
+""" BOVI(n)E dashboard endpoint """
 import time
 from multiprocessing.dummy import Pool
+import json
+import os
 
 import boto3
 from lib import rolesession
 from lib.awsaccounts import AwsAccounts
-import json
-import os
+
 
 ASSUME_ROLE = os.environ['ASSUME_ROLE']
 
+
 def get_account_stats(account_rec):
+    """ Get account statistics for dashboard.
+    :param account_rec: AWS account
+    """
     session = boto3.session.Session()
     account = account_rec['accountNum']
     assume = rolesession.assume_crossact_audit_role(
@@ -30,7 +36,7 @@ def get_account_stats(account_rec):
         user_count += len(iam.list_users()['Users'])
         elb = assume.client('elb')
         elb_count += len(elb.describe_load_balancers()[
-                             'LoadBalancerDescriptions'])
+            'LoadBalancerDescriptions'])
     return dict(
         InstanceCount=instance_count,
         UserCount=user_count,
@@ -38,7 +44,8 @@ def get_account_stats(account_rec):
         ELBCount=elb_count)
 
 
-def dashboard(role=None):
+def dashboard():
+    """ Main dashboard function. Run stats across all accounts. """
     start = time.time()
     instance_count = 0
     user_count = 0
@@ -52,11 +59,11 @@ def dashboard(role=None):
     results = pool.map(get_account_stats, accounts)
     pool.close()
     pool.join()
-    for x in results:
-        instance_count += x['InstanceCount']
-        user_count += x['UserCount']
-        sg_count += x['SecurityGroupCount']
-        elb_count += x['ELBCount']
+    for acc_result in results:
+        instance_count += acc_result['InstanceCount']
+        user_count += acc_result['UserCount']
+        sg_count += acc_result['SecurityGroupCount']
+        elb_count += acc_result['ELBCount']
 
     end = time.time()
     result = dict(
@@ -70,17 +77,16 @@ def dashboard(role=None):
 
     return result
 
-def lambda_handler(context,event):
+
+def lambda_handler(*kwargs):
+    """ Lambda handler """
+    print kwargs
     results = dashboard()
     body = results['Summary']
-    time = results['Time']
+    run_time = results['Time']
     response = {
         "statusCode": 200,
         "body": json.dumps(body)
     }
-    print "Time to complete: %s" % str(time)
+    print "Time to complete: %s" % str(run_time)
     return response
-
-if __name__ == "__main__":
-    resp = lambda_handler(None,None)
-    print resp
