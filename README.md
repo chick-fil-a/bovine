@@ -55,4 +55,3 @@ Additional Info
 You can find additional information on Chick-fil-A's journey around this problem here: https://www.youtube.com/watch?v=_0BCJLIxowQ
 
 We welcome ideas around how to improve this project.
-
