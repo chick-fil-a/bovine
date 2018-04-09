@@ -1,4 +1,4 @@
-![Alt text](bovine.png?raw=true "Logo")
+![Alt text](docs/images/bovine.png?raw=true "Logo")
 
 BOVI(n)E - Building Operational Visibility Into (n) environments
 ===================
