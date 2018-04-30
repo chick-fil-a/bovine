@@ -1,6 +1,6 @@
-![Alt text](bovine.png?raw=true "Logo")
+![Alt text](docs/images/bovine.png?raw=true "Logo")
 
-BOVI(n)E - Building Operational Visibility Into (n) environments
+BOVI(n)E - Building Operational Visibility Into (n) Environments
 ===================
 As Enterprises adopt AWS public cloud, one common strategy to use is the multi-account strategy. This strategy can help security teams isolate
 workloads and provide a strong security boundary around sensitive applications. The biggest problem with the multi-account strategy is visibility
