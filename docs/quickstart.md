@@ -37,7 +37,9 @@ Deploy API Stack
 BOVI(n)E leverages the Serverless Framework found at [Serverless](http://www.serverless.com).
 
 Install the Serverless Framework:
-> npm install serverless -g
+```shell
+$ npm install serverless -g
+```
 
 Prior to calling the deployment scripts, the following items must already be deployed on AWS:
 *   [Setup BOVI(n)E Role](setup_bovine_role.md) A role in security account that has a trust relation with an assumable role in the target accounts. This role needs readonly rights in the target account.
@@ -50,7 +52,9 @@ You must also have proper serverless config files built:
 
 ### Deployment
 In the backend directory:
-> serverless deploy --profile [aws credentials profile] --stage [deployment stage (dev/prod)]
+```shell
+$ serverless deploy --profile [aws credentials profile] --stage [deployment stage (dev/prod)]
+```
 
 The profile arg is your AWS credentials profile. The stage arg is the deployment stage.
 
@@ -61,4 +65,6 @@ After deploying, you need to add binary content support in API Gateway:
 Deploy Frontend App
 -------------------
 In the tools directory:
-> sh deploy-content.sh [aws profile] [s3 bucket name for BOVI(n)E html]
+```shell
+$ sh deploy-content.sh [aws profile] [s3 bucket name for BOVI(n)E html]
+```
