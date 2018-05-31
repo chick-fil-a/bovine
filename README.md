@@ -28,19 +28,26 @@ Prior to calling the deployment scripts, the following items must already be dep
 *   DynamoDB table called AWS-Accounts-Table with accountNum as the primary key
 
 You must also have proper serverless config files built:
-*   ex: config.prod.json
+*   ex: `config.prod.json`
 
 ### Deployment at the top level
 Deployment of the API backend application is done with a simple serverless command.
 *   To do the initial deploy of the application
-    > serverless deploy --profile <aws credentials profile> --stage <deployment stage (dev/prod)>
+
+```shell
+$ serverless deploy --profile <aws credentials profile> --stage <deployment stage (dev/prod)>
+```
+
 * After deploying API Gateway, you need to add binary content support:
    - In the AWS Console under API Gateway, click the newly deployed BOVI(n)E API endpoint -> settings. Under "Binary Media Types" add the following content-types: image/png, image/x-icon
 
 ### Angular application
 Deployment of the static content is an AWS S3 sync of the frontend directory. A simple bash script can be found in the tools directory. This will sync to the
 appropriate S3 bucket for the stage.
- > sh deploy-content.sh <aws credential profile> <stage>
+
+```shell
+$ sh deploy-content.sh <aws credential profile> <stage>
+```
 
 
 What's next?
